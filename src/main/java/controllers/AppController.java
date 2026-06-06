@@ -1,18 +1,29 @@
 package controllers;
 
 import models.CapacityReport;
+import models.Dataset;
+import services.DataService;
+import services.PredictionService;
 import services.CapacityPlannerService;
+import java.util.*;
 
 public class AppController
 {
+    private DataService dataService;
+    private PredictionService predictionService;
     private CapacityPlannerService capacityService;
-
-    // private DataService dataService;
-    // private PredictionService predictionService;
 
     public AppController()
     {
+        this.dataService = new DataService();
+        this.predictionService = new PredictionService();
         this.capacityService = new CapacityPlannerService();
+    }
+
+    public double getPredictionForCourse(String courseID, String filePath)
+    {
+        List<Dataset> allData = dataService.loadData(filePath);
+        return predictionService.executionPrediction(allData);
     }
 
     public void handleCourseSelection(String courseID)
@@ -22,7 +33,7 @@ public class AppController
 
     public CapacityReport handleCapacitySimulation(double basePrediction, int override, int sections, int seats)
     {
-        System.out.println("UI triggered capacity simulation");
+        System.out.println("UI triggered capacity simulation.");
         return capacityService.generateReport(basePrediction, override, sections, seats);
     }
 }
