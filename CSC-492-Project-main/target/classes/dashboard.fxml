@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.AppController">
+
+    <Label text="CSUDH Course Enrollment Demand Dashboard" />
+
+    <ComboBox fx:id="courseDropdown"
+              promptText="Select a Course" />
+
+    <Button text="Predict Enrollment"
+            onAction="#handlePredict" />
+
+    <Label fx:id="resultLabel"
+           text="Prediction will appear here." />
+
+</VBox>
