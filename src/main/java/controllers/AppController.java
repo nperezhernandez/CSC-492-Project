@@ -23,7 +23,16 @@ public class AppController
     public double getPredictionForCourse(String courseID, String filePath)
     {
         List<Dataset> allData = dataService.loadData(filePath);
-        return predictionService.executionPrediction(allData);
+        List<Dataset> filteredData = new ArrayList<>();
+
+        for (Dataset row : allData)
+        {
+            if (row.getCourseID().equalsIgnoreCase(courseID))
+            {
+                filteredData.add(row);
+            }
+        }
+        return predictionService.executionPrediction(filteredData);
     }
 
     public void handleCourseSelection(String courseID)

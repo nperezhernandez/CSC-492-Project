@@ -4,23 +4,26 @@ import models.CapacityReport;
 
 public class CapacityPlannerService
 {
-    public double calculateAdjustedDemand(double basePrediction, int overrideAmount)
+    public CapacityReport generateReport(double basePrediction, int trendOverride, int sections, int seatsPerSection)
     {
-        //  add math logic later
-        return basePrediction + overrideAmount;
+        double overrideMultiplier = 1.0 + (trendOverride / 100.0);
+        double adjustedDemand = basePrediction * overrideMultiplier;
 
-    }
+        int totalCapacity = sections * seatsPerSection;
 
-    public int calculateTotalCapacity(int sections, int seats)
-    {
-        // add math logic later
-        return sections * seats;
-    }
+        double netDifference = totalCapacity - adjustedDemand;
 
-    public CapacityReport generateReport(double prediction, int override, int sections, int seats)
-    {
-        // add heavy logic later
-        return new CapacityReport(0.0, 0, 0.0, "Report Generated");
+        String warningMessage;
+        if (netDifference < 0)
+        {
+            warningMessage = "Warning: Demand exceeds capacity. Consider adding a section.";
+        } else if (netDifference > 30)
+        {
+            warningMessage = "Note: High excess capacity detected. Consider reducing sections.";
+        } else
+        {
+            warningMessage = "Supply matches expected demand.";
+        }
+        return new CapacityReport(adjustedDemand, totalCapacity, netDifference, warningMessage);
     }
 }
-
