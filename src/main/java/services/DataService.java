@@ -4,6 +4,7 @@ import models.Dataset;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataService
 {
@@ -44,5 +45,16 @@ public class DataService
         }
 
         return courseDataList;
+    }
+
+    public List<String> getUniqueCourseIDs(String filePath)
+    {
+        List<Dataset> allData = loadData(filePath);
+
+        return allData.stream()
+                .map(Dataset::getCourseID)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
     }
 }

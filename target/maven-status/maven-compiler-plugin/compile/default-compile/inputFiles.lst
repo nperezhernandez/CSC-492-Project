@@ -1,0 +1,14 @@
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/MainApp.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/controllers/AppController.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/controllers/LoginController.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/controllers/WelcomeController.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/models/CapacityReport.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/models/Dataset.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/models/PredictionResult.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/services/CapacityPlannerService.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/services/DataService.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/services/PredictionService.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/services/predicators/LinearRegressionPredictor.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/services/predicators/MovingAveragePredictor.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/services/predicators/Predictor.java
+/Users/sinatra/Desktop/SeniorDesignProject/src/main/java/utils/MockDataGenerator.java

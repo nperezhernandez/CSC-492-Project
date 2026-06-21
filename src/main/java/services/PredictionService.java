@@ -1,32 +1,41 @@
 package services;
 
 import models.Dataset;
-import services.predicators.Predictor;
+import models.PredictionResult;
+import services.predicators.LinearRegressionPredictor;
 import services.predicators.MovingAveragePredictor;
-import java.util.*;
+import services.predicators.Predictor;
+import java.util.List;
 
-public class PredictionService
-{
-    private Predictor currentPredictor;
+public class PredictionService {
 
-   public PredictionService()
-   {
-       this.currentPredictor = new MovingAveragePredictor();
-   }
+    private Predictor movingAverage = new MovingAveragePredictor();
+    private Predictor linearRegression = new LinearRegressionPredictor();
 
-   public void determineAlgorithm(List<Dataset> data)
-   {
-       if (data.size() < 4)
-       {
-           this.currentPredictor = new MovingAveragePredictor();
-       } else {
-           // add liner regression after made
-           this.currentPredictor = new MovingAveragePredictor();
-       }
-   }
+    public PredictionResult executionPrediction(List<Dataset> data)
+    {
+        if (data == null || data.isEmpty())
+        {
+            return new PredictionResult(0.0, "Insufficient Data", 0);
+        }
 
-   public double executionPrediction(List<Dataset> data)
-   {
-       return currentPredictor.predict(data);
-   }
+        double prediction;
+        String algorithmName;
+
+        long startTime = System.nanoTime();
+
+        if (data.size() < 3)
+        {
+            algorithmName = "Moving Average";
+            prediction = movingAverage.predict(data);
+        } else {
+            algorithmName = "Linear Regression (Apache Math)";
+            prediction = linearRegression.predict(data);
+        }
+
+        long endTime = System.nanoTime();
+        long durationMs = (endTime - startTime) / 1000000;
+
+        return new PredictionResult(prediction, algorithmName, durationMs);
+    }
 }

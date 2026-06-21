@@ -2,15 +2,14 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
         Scene scene = new Scene(loader.load(), 800, 500);
 
-        stage.setTitle("Course Enrollment Demand Dashboard");
+        stage.setTitle("Course Enrollment Demand Dashboard Login");
         stage.setScene(scene);
         stage.show();
     }

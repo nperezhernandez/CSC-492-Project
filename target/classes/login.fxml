@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" alignment="CENTER"
+      style="-fx-background-color: #F5F5DC;"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.LoginController">
+
+      <Label text = "CSUDH Enrollment Predictor Login"
+      style = "-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+      <TextField fx:id = "usernameField" promptText = "Username"
+        maxWidth = "250"/>
+
+      <PasswordField fx:id = "passwordField" promptText = "Password"
+        maxWidth = "250"/>
+
+      <Button text = "Login" onAction = "#handleLogin"/>
+
+      <Label fx:id = "messageLabel" text = ""/>
+
+</VBox>

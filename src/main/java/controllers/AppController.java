@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 
 import models.CapacityReport;
 import models.Dataset;
+import models.PredictionResult;
 import services.DataService;
 import services.PredictionService;
 import services.CapacityPlannerService;
@@ -35,12 +36,8 @@ public class AppController {
 
     @FXML
     public void initialize() {
-        courseDropdown.getItems().addAll(
-                "CSC 301",
-                "CSC 311",
-                "CSC 481",
-                "CSC 492"
-        );
+        List<String> uniqueCourses = dataService.getUniqueCourseIDs(DATA_FILE);
+        courseDropdown.getItems().addAll(uniqueCourses);
     }
 
     @FXML
@@ -52,16 +49,16 @@ public class AppController {
             return;
         }
 
-        double prediction = getPredictionForCourse(selectedCourse, DATA_FILE);
+        PredictionResult result = getPredictionForCourse(selectedCourse, DATA_FILE);
+
         resultLabel.setText(
-                "Predicted enrollment for "
-                        + selectedCourse
-                        + ": "
-                        + String.format("%.0f", prediction)
+                "Predicted enrollment: " + String.format("%.0f", result.getPredictedEnrollment()) +
+                        "\nAlgorithm Used: " + result.getAlgorithmUsed() +
+                        "\nExecution Time: " + result.getExecutionTimeMs() + "ms"
         );
     }
 
-    public double getPredictionForCourse(String courseID, String filePath) {
+    public PredictionResult getPredictionForCourse(String courseID, String filePath) {
         List<Dataset> allData = dataService.loadData(filePath);
         List<Dataset> filteredData = new ArrayList<>();
 
