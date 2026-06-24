@@ -3,6 +3,12 @@ package controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 
 import models.CapacityReport;
 import models.Dataset;
@@ -27,6 +33,9 @@ public class AppController {
 
     @FXML
     private Label resultLabel;
+
+    @FXML
+    private LineChart<String, Number> enrollmentChart;
 
     public AppController() {
         this.dataService = new DataService();
@@ -54,8 +63,39 @@ public class AppController {
         resultLabel.setText(
                 "Predicted enrollment: " + String.format("%.0f", result.getPredictedEnrollment()) +
                         "\nAlgorithm Used: " + result.getAlgorithmUsed() +
-                        "\nExecution Time: " + result.getExecutionTimeMs() + "ms"
-        );
+                        "\nExecution Time: " + result.getExecutionTimeMs() + "ms");
+
+        enrollmentChart.getData().clear();
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(selectedCourse);
+
+        List<Dataset> allData = dataService.loadData(DATA_FILE);
+
+        for (Dataset row : allData) {
+            if (row.getCourseID().equalsIgnoreCase(selectedCourse)) {
+
+                String semesterLabel = row.getSemester() + "\n" + row.getYear();
+
+                series.getData().add(
+                        new XYChart.Data<>(
+                                semesterLabel,
+                                row.getEnrollmentCount()));
+            }
+        }
+
+        enrollmentChart.getData().add(series);
+
+        XYChart.Series<String, Number> predictionSeries = new XYChart.Series<>();
+
+        predictionSeries.setName("Prediction");
+
+        predictionSeries.getData().add(
+                new XYChart.Data<>(
+                        "Next Semester",
+                        result.getPredictedEnrollment()));
+
+        enrollmentChart.getData().add(predictionSeries);
     }
 
     public PredictionResult getPredictionForCourse(String courseID, String filePath) {
@@ -86,7 +126,24 @@ public class AppController {
                 basePrediction,
                 override,
                 sections,
-                seats
-        );
+                seats);
+    }
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    public void goBackToWelcome() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/welcome.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 700);
+
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Welcome");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

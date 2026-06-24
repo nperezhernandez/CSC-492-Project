@@ -7,7 +7,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
-        Scene scene = new Scene(loader.load(), 800, 500);
+        Scene scene = new Scene(loader.load(), 800, 700);
 
         stage.setTitle("Course Enrollment Demand Dashboard Login");
         stage.setScene(scene);
