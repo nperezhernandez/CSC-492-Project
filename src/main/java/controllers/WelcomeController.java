@@ -14,7 +14,7 @@ public class WelcomeController {
                 new FXMLLoader(getClass().getResource("/dashboard.fxml"));
 
         Scene scene =
-                new Scene(loader.load(), 800, 500);
+                new Scene(loader.load(), 800, 700);
 
         Stage stage =
                 (Stage) javafx.stage.Stage.getWindows().get(0);
@@ -24,7 +24,17 @@ public class WelcomeController {
 
     @FXML
     private void openCapacityPlanner() {
-        System.out.println("Capacity Planner clicked.");
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/capacity.fxml"));
+        Scene scene = new Scene(loader.load(), 800, 700);
+
+        Stage stage = (Stage) javafx.stage.Stage.getWindows().get(0);
+        stage.setScene(scene);
+        stage.setTitle("Capacity Planner");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
     }
 
     @FXML

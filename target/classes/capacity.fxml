@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+
+<VBox spacing="15" alignment="CENTER"
+      style="-fx-background-color: #F5F5DC; -fx-padding: 30;"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.CapacityController">
+
+    <Label text="Capacity Planner"
+           style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+    <Label text="The Capacity Planner helps estimate whether the department has enough seats available for a course based on predicted enrollment. Enter the expected enrollment, adjust the trend if needed, then enter how many sections and seats per section are planned."
+           wrapText="true"
+           maxWidth="500"
+           prefWidth="500"
+           prefHeight="100"
+           style="-fx-font-size: 13px;" />
+
+    <Label text="Example: If predicted enrollment is 90, with 3 sections and 30 seats each, total capacity is 90 seats."
+           wrapText="true"
+           maxWidth="500"
+           prefWidth="500"
+           prefHeight="60"
+           style="-fx-font-size: 12px; -fx-font-style: italic;" />
+
+    <TextField fx:id="basePredictionField"
+               promptText="Base Prediction"
+               maxWidth="220"/>
+
+    <TextField fx:id="overrideField"
+               promptText="Trend Override %"
+               maxWidth="220"/>
+
+    <TextField fx:id="sectionsField"
+               promptText="Number of Sections"
+               maxWidth="220"/>
+
+    <TextField fx:id="seatsField"
+               promptText="Seats per Section"
+               maxWidth="220"/>
+
+    <Button text="Generate Report"
+            onAction="#handleGenerateReport"
+            prefWidth="220"/>
+
+    <HBox spacing="10" alignment="CENTER">
+    <Circle fx:id="statusCircle" radius="8" fill="GRAY" />
+
+    <Label fx:id="reportLabel"
+           text="Report will appear here."
+           wrapText="true"
+           maxWidth="400"/>
+    </HBox>
+
+    <Button fx:id="backButton"
+            text="Back"
+            onAction="#goBackToWelcome"
+            prefWidth="120"/>
+
+</VBox>

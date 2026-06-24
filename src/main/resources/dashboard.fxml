@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
 
 <VBox spacing="15" alignment="CENTER"
       style="-fx-background-color: #F5F5DC;"
@@ -19,4 +20,20 @@
     <Label fx:id="resultLabel"
            text="Prediction will appear here." />
 
+<LineChart fx:id="enrollmentChart"
+           title="Enrollment History"
+           prefWidth="700"
+           prefHeight="300">
+    <xAxis>
+        <CategoryAxis label="Semester" />
+    </xAxis>
+    <yAxis>
+        <NumberAxis label="Enrollment" />
+    </yAxis>
+</LineChart>
+
+        <Button fx:id="backButton"
+            text="Back"
+            onAction="#goBackToWelcome"
+            prefWidth="120"/>
 </VBox>
