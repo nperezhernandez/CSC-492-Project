@@ -5,37 +5,50 @@ import models.PredictionResult;
 import services.predicators.LinearRegressionPredictor;
 import services.predicators.MovingAveragePredictor;
 import services.predicators.Predictor;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PredictionService {
 
-    private Predictor movingAverage = new MovingAveragePredictor();
-    private Predictor linearRegression = new LinearRegressionPredictor();
-
-    public PredictionResult executionPrediction(List<Dataset> data)
+    public PredictionResult executionPrediction(List<Dataset> data, int yearsToConsider)
     {
-        if (data == null || data.isEmpty())
+        long startTime = System.currentTimeMillis();
+
+        List<Dataset> filteredData = data;
+
+        if (data != null && !data.isEmpty() && yearsToConsider > 0)
         {
-            return new PredictionResult(0.0, "Insufficient Data", 0);
+            int maxYear = data.stream().mapToInt(Dataset::getYear).max().orElse(0);
+
+            int cutoffYear = maxYear - yearsToConsider;
+
+            filteredData = data.stream()
+                    .filter(d -> d.getYear() > cutoffYear)
+                    .collect(Collectors.toList());
         }
 
-        double prediction;
+        Predictor predictor;
         String algorithmName;
+        String warningMessage = "";
 
-        long startTime = System.nanoTime();
-
-        if (data.size() < 3)
+        if (data == null || data.size() < 3)
         {
+            predictor = new MovingAveragePredictor();
             algorithmName = "Moving Average";
-            prediction = movingAverage.predict(data);
+
+            int dataSize = (data == null) ? 0 : data.size();
+            warningMessage = "Warning: Low historical data (" + dataSize + " terms). Prediction may be unreliable.";
         } else {
-            algorithmName = "Linear Regression (Apache Math)";
-            prediction = linearRegression.predict(data);
+            predictor = new LinearRegressionPredictor();
+            algorithmName = "Linear Regression";
         }
 
-        long endTime = System.nanoTime();
-        long durationMs = (endTime - startTime) / 1000000;
+        double prediction = predictor.predict(data);
 
-        return new PredictionResult(prediction, algorithmName, durationMs);
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+
+        return new PredictionResult(prediction, algorithmName, executionTime, warningMessage);
     }
 }

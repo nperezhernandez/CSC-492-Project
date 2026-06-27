@@ -4,10 +4,14 @@ import models.CapacityReport;
 
 public class CapacityPlannerService
 {
+    private AuditLoggerService auditLogger = new AuditLoggerService();
+
     public CapacityReport generateReport(double basePrediction, int trendOverride, int sections, int seatsPerSection)
     {
         double overrideMultiplier = 1.0 + (trendOverride / 100.0);
         double adjustedDemand = basePrediction * overrideMultiplier;
+
+        auditLogger.logOverrideAction(basePrediction, trendOverride, adjustedDemand);
 
         int totalCapacity = sections * seatsPerSection;
 
