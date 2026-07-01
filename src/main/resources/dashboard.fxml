@@ -13,6 +13,10 @@
 
     <ComboBox fx:id="courseDropdown"
               promptText="Select a Course" />
+    
+    <ComboBox fx:id="yearRangeDropdown"
+          promptText="Years to Consider"
+          prefWidth="220" />
 
     <Button text="Predict Enrollment"
             onAction="#handlePredict" />

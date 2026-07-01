@@ -19,6 +19,10 @@
         onAction="#openCapacityPlanner"
         prefWidth="250"/>
         
+    <Button text="Course Information"
+        onAction="#openCourseInformation"
+        prefWidth="250"/>
+
     <Button text="Exit"
         onAction="#exitApplication"
         prefWidth="250"/>

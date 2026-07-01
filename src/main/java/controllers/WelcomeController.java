@@ -10,14 +10,11 @@ public class WelcomeController {
     @FXML
     private void openDashboard() throws Exception {
 
-        FXMLLoader loader =
-                new FXMLLoader(getClass().getResource("/dashboard.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard.fxml"));
 
-        Scene scene =
-                new Scene(loader.load(), 800, 700);
+        Scene scene = new Scene(loader.load(), 800, 700);
 
-        Stage stage =
-                (Stage) javafx.stage.Stage.getWindows().get(0);
+        Stage stage = (Stage) javafx.stage.Stage.getWindows().get(0);
 
         stage.setScene(scene);
     }
@@ -25,16 +22,16 @@ public class WelcomeController {
     @FXML
     private void openCapacityPlanner() {
         try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/capacity.fxml"));
-        Scene scene = new Scene(loader.load(), 800, 700);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/capacity.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 700);
 
-        Stage stage = (Stage) javafx.stage.Stage.getWindows().get(0);
-        stage.setScene(scene);
-        stage.setTitle("Capacity Planner");
+            Stage stage = (Stage) javafx.stage.Stage.getWindows().get(0);
+            stage.setScene(scene);
+            stage.setTitle("Capacity Planner");
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -45,5 +42,20 @@ public class WelcomeController {
     @FXML
     private void exitApplication() {
         System.exit(0);
+    }
+
+    @FXML
+    private void openCourseInformation() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/courses.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 700);
+
+            Stage stage = (Stage) javafx.stage.Stage.getWindows().get(0);
+            stage.setScene(scene);
+            stage.setTitle("Course Information");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
