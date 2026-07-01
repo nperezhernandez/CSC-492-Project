@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -17,6 +18,7 @@ import services.DataService;
 import services.PredictionService;
 import services.CapacityPlannerService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,39 @@ public class AppController {
     @FXML
     private LineChart<String, Number> enrollmentChart;
 
+    @FXML
+    private ComboBox<Integer> yearRangeDropdown;
+
+    private int semesterOrder(String semester) {
+        switch (semester.toLowerCase()) {
+            case "spring":
+                return 1;
+            case "summer":
+                return 2;
+            case "fall":
+                return 3;
+            case "winter":
+                return 4;
+            default:
+                return 5;
+        }
+    }
+
+    @FXML
+    private void openCourseInformation() throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/courses.fxml"));
+
+        Parent root = loader.load();
+
+        Stage stage = new Stage();
+        stage.setTitle("Computer Science Course Information");
+        stage.setScene(new Scene(root));
+
+        stage.show();
+    }
+
     public AppController() {
         this.dataService = new DataService();
         this.predictionService = new PredictionService();
@@ -47,6 +82,61 @@ public class AppController {
     public void initialize() {
         List<String> uniqueCourses = dataService.getUniqueCourseIDs(DATA_FILE);
         courseDropdown.getItems().addAll(uniqueCourses);
+        yearRangeDropdown.getItems().addAll(0, 3, 5);
+        yearRangeDropdown.setValue(0);
+    }
+
+    private void updateEnrollmentChart(String selectedCourse, int yearsToConsider) {
+        enrollmentChart.getData().clear();
+
+        List<Dataset> allData = dataService.loadData(DATA_FILE);
+        List<Dataset> courseData = new ArrayList<>();
+
+        for (Dataset row : allData) {
+            if (row.getCourseID().equalsIgnoreCase(selectedCourse)) {
+                courseData.add(row);
+            }
+        }
+
+        if (yearsToConsider > 0 && !courseData.isEmpty()) {
+            int latestYear = courseData.stream()
+                    .mapToInt(Dataset::getYear)
+                    .max()
+                    .orElse(0);
+
+            int cutoffYear = latestYear - yearsToConsider;
+
+            courseData = courseData.stream()
+                    .filter(row -> row.getYear() >= cutoffYear)
+                    .toList();
+        }
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(selectedCourse + " Enrollment");
+
+        courseData = courseData.stream()
+                .sorted((a, b) -> {
+                    int yearCompare = Integer.compare(a.getYear(), b.getYear());
+
+                    if (yearCompare != 0) {
+                        return yearCompare;
+                    }
+
+                    return Integer.compare(
+                            semesterOrder(a.getSemester()),
+                            semesterOrder(b.getSemester()));
+                })
+                .toList();
+        for (Dataset row : courseData) {
+            String semesterLabel = row.getSemester() + "\n" + row.getYear();
+
+            series.getData().add(
+                    new XYChart.Data<>(
+                            semesterLabel,
+                            row.getEnrollmentCount()));
+        }
+
+        enrollmentChart.getData().add(series);
     }
 
     @FXML
@@ -58,33 +148,19 @@ public class AppController {
             return;
         }
 
-        PredictionResult result = getPredictionForCourse(selectedCourse, DATA_FILE);
+        int yearsToConsider = yearRangeDropdown.getValue();
+
+        PredictionResult result = getPredictionForCourse(
+                selectedCourse,
+                DATA_FILE,
+                yearsToConsider);
 
         resultLabel.setText(
                 "Predicted enrollment: " + String.format("%.0f", result.getPredictedEnrollment()) +
                         "\nAlgorithm Used: " + result.getAlgorithmUsed() +
                         "\nExecution Time: " + result.getExecutionTimeMs() + "ms");
 
-        enrollmentChart.getData().clear();
-
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName(selectedCourse);
-
-        List<Dataset> allData = dataService.loadData(DATA_FILE);
-
-        for (Dataset row : allData) {
-            if (row.getCourseID().equalsIgnoreCase(selectedCourse)) {
-
-                String semesterLabel = row.getSemester() + "\n" + row.getYear();
-
-                series.getData().add(
-                        new XYChart.Data<>(
-                                semesterLabel,
-                                row.getEnrollmentCount()));
-            }
-        }
-
-        enrollmentChart.getData().add(series);
+        updateEnrollmentChart(selectedCourse, yearsToConsider);
 
         XYChart.Series<String, Number> predictionSeries = new XYChart.Series<>();
 
@@ -98,7 +174,7 @@ public class AppController {
         enrollmentChart.getData().add(predictionSeries);
     }
 
-    public PredictionResult getPredictionForCourse(String courseID, String filePath) {
+    public PredictionResult getPredictionForCourse(String courseID, String filePath, int yearsToConsider) {
         List<Dataset> allData = dataService.loadData(filePath);
         List<Dataset> filteredData = new ArrayList<>();
 
@@ -107,7 +183,7 @@ public class AppController {
                 filteredData.add(row);
             }
         }
-        return predictionService.executionPrediction(filteredData);
+        return predictionService.executionPrediction(filteredData, yearsToConsider);
     }
 
     public void handleCourseSelection(String courseID) {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" alignment="CENTER"
+      style="-fx-background-color: #F5F5DC; -fx-padding: 20;"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.CourseInfoController">
+
+    <TableView fx:id="courseTable" prefWidth="800" prefHeight="500">
+        <columns>
+            <TableColumn fx:id="codeColumn" text="Course"/>
+            <TableColumn fx:id="nameColumn" text="Course Name"/>
+            <TableColumn fx:id="prereqColumn" text="Prerequisites"/>
+            <TableColumn fx:id="semesterColumn" text="Offered"/>
+            <TableColumn fx:id="predictionColumn" text="Predicted Enrollment"/>
+        </columns>
+    </TableView>
+
+    <Button fx:id="backButton"
+            text="Back"
+            onAction="#goBackToWelcome"
+            prefWidth="120"/>
+</VBox>
