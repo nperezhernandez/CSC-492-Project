@@ -8,7 +8,18 @@
       style="-fx-background-color: #F5F5DC; -fx-padding: 30;"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="controllers.CapacityController">
+      
 
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 10;">
+    <MenuButton text="☰">
+        <items>
+            <MenuItem text="Dashboard" onAction="#openDashboard"/>
+            <MenuItem text="Capacity Planner" onAction="#openCapacityPlanner"/>
+            <MenuItem text="Course Information" onAction="#openCourseInformation"/>
+            <MenuItem text="Logout" onAction="#logout"/>
+        </items>
+    </MenuButton>
+</HBox>
     <Label text="Capacity Planner"
            style="-fx-font-size: 22px; -fx-font-weight: bold;" />
 

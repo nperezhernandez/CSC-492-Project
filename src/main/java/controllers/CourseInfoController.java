@@ -36,9 +36,43 @@ public class CourseInfoController {
 
     @FXML
     private TableColumn<Course, Number> predictionColumn;
-
+    
     @FXML
     private Button backButton;
+
+    @FXML
+public void openDashboard() {
+    switchScene("/dashboard.fxml", "Enrollment Dashboard");
+}
+
+@FXML
+public void openCapacityPlanner() {
+    switchScene("/capacity.fxml", "Capacity Planner");
+}
+
+@FXML
+public void openCourseInformation() {
+    switchScene("/courses.fxml", "Course Information");
+}
+
+@FXML
+public void logout() {
+    switchScene("/login.fxml", "Login");
+}
+
+private void switchScene(String fxmlFile, String title) {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+        Scene scene = new Scene(loader.load(), 800, 700);
+
+        Stage stage = (Stage) courseTable.getScene().getWindow(); // change this control per controller
+        stage.setScene(scene);
+        stage.setTitle(title);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
     @FXML
     public void initialize() {
@@ -66,8 +100,8 @@ public class CourseInfoController {
             if (!courseData.isEmpty()) {
                 PredictionResult result = predictionService.executionPrediction(courseData, 0);
 
-                course.setPredictedEnrollment(
-                        result.getPredictedEnrollment());
+                course.setPredictedEnrollment(Math.round(
+                        result.getPredictedEnrollment()));
             }
         }
 

@@ -3,28 +3,41 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="20" alignment="CENTER"
-    style="-fx-background-color: #F5F5DC;"
-    xmlns:fx="http://javafx.com/fxml"
-    fx:controller="controllers.WelcomeController">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.WelcomeController"
+            style="-fx-background-color: #F5F5DC;">
 
-    <Label text="Welcome to the CSUDH Enrollment Prediction System"
-        style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+    <top>
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 10;">
+            <Button fx:id="logoutButton"
+                    text="Logout"
+                    onAction="#logout"/>
+        </HBox>
+    </top>
 
-    <Button text="Enrollment Dashboard"
-         onAction="#openDashboard"
-         prefWidth="250"/>
+    <center>
+        <VBox spacing="20" alignment="CENTER">
 
-    <Button text="Capacity Planner"
-        onAction="#openCapacityPlanner"
-        prefWidth="250"/>
-        
-    <Button text="Course Information"
-        onAction="#openCourseInformation"
-        prefWidth="250"/>
+            <Label text="Welcome to the CSUDH Enrollment Prediction System"
+                   style="-fx-font-size:20px; -fx-font-weight:bold;"/>
 
-    <Button text="Exit"
-        onAction="#exitApplication"
-        prefWidth="250"/>
+            <Button text="Enrollment Dashboard"
+                    onAction="#openDashboard"
+                    prefWidth="250"/>
 
-</VBox>
+            <Button text="Capacity Planner"
+                    onAction="#openCapacityPlanner"
+                    prefWidth="250"/>
+
+            <Button text="Course Information"
+                    onAction="#openCourseInformation"
+                    prefWidth="250"/>
+
+            <Button text="Exit"
+                    onAction="#exitApplication"
+                    prefWidth="250"/>
+
+        </VBox>
+    </center>
+
+</BorderPane>

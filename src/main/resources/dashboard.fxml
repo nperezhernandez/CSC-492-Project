@@ -9,7 +9,19 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="controllers.AppController">
 
-    <Label text="CSUDH Course Enrollment Demand Dashboard" />
+<HBox alignment="CENTER_LEFT" style="-fx-padding: 10;">
+    <MenuButton text="☰">
+        <items>
+            <MenuItem text="Dashboard" onAction="#openDashboard"/>
+            <MenuItem text="Capacity Planner" onAction="#openCapacityPlanner"/>
+            <MenuItem text="Course Information" onAction="#openCourseInformation"/>
+            <MenuItem text="Logout" onAction="#logout"/>
+        </items>
+    </MenuButton>
+</HBox>
+ <Label text="CSUDH Course Enrollment Demand Dashboard" />
+
+
 
     <ComboBox fx:id="courseDropdown"
               promptText="Select a Course" />

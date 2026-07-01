@@ -37,6 +37,40 @@ public class CapacityController {
     @FXML
     private Circle statusCircle;
 
+   @FXML
+public void openDashboard() {
+    switchScene("/dashboard.fxml", "Enrollment Dashboard");
+}
+
+@FXML
+public void openCapacityPlanner() {
+    switchScene("/capacity.fxml", "Capacity Planner");
+}
+
+@FXML
+public void openCourseInformation() {
+    switchScene("/courses.fxml", "Course Information");
+}
+
+@FXML
+public void logout() {
+    switchScene("/login.fxml", "Login");
+}
+
+private void switchScene(String fxmlFile, String title) {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+        Scene scene = new Scene(loader.load(), 800, 700);
+
+        Stage stage = (Stage) basePredictionField.getScene().getWindow(); 
+        stage.setScene(scene);
+        stage.setTitle(title);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
     @FXML
     private void handleGenerateReport() {
         try {

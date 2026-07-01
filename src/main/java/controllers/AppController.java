@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+//import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -18,7 +18,7 @@ import services.DataService;
 import services.PredictionService;
 import services.CapacityPlannerService;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +42,40 @@ public class AppController {
     @FXML
     private ComboBox<Integer> yearRangeDropdown;
 
+
+@FXML
+public void openDashboard() {
+    switchScene("/dashboard.fxml", "Enrollment Dashboard");
+}
+
+@FXML
+public void openCapacityPlanner() {
+    switchScene("/capacity.fxml", "Capacity Planner");
+}
+
+@FXML
+public void openCourseInformation() {
+    switchScene("/courses.fxml", "Course Information");
+}
+
+@FXML
+public void logout() {
+    switchScene("/login.fxml", "Login");
+}
+
+private void switchScene(String fxmlFile, String title) {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+        Scene scene = new Scene(loader.load(), 800, 700);
+
+        Stage stage = (Stage) courseDropdown.getScene().getWindow(); // change this control per controller
+        stage.setScene(scene);
+        stage.setTitle(title);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
     private int semesterOrder(String semester) {
         switch (semester.toLowerCase()) {
             case "spring":
@@ -57,20 +91,7 @@ public class AppController {
         }
     }
 
-    @FXML
-    private void openCourseInformation() throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/courses.fxml"));
-
-        Parent root = loader.load();
-
-        Stage stage = new Stage();
-        stage.setTitle("Computer Science Course Information");
-        stage.setScene(new Scene(root));
-
-        stage.show();
-    }
+   
 
     public AppController() {
         this.dataService = new DataService();
